@@ -8,3 +8,4 @@ export { TopBar } from './top-bar';
 export { FilterCheckbox } from './filter-checkbox';
 export { Filters } from './filters';
 export { RangeSlider } from './range-slider';
+export { ProductImage } from './product-image'
