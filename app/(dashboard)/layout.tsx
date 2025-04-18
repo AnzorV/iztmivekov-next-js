@@ -10,6 +10,7 @@ export const metadata = {
   }) {
     return (
       <html lang="en">
+        DASHBOARD HEADER
         <body>{children}</body>
       </html>
     )
