@@ -8,6 +8,7 @@ const nunito = Nunito({
   weight: ['400', '500', '600', '700', '800', '900'],
 });
 
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -19,6 +20,7 @@ export default function RootLayout({
         <link data-rh="true" rel="icon" href="/logo.png" />
       </head>
       <body className={nunito.className}>
+      
     {children}
       </body>
     </html>
