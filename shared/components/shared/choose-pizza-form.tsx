@@ -20,13 +20,13 @@ interface Props {
   className?: string;
   ingredients: Ingredient[];
   items?: any[];
-  onClickAdd?: VoidFunction;
+  onClickAddCart?: VoidFunction;
 }
 
 export const ChoosePizzaForm: React.FC<Props> = ({
   ingredients,
   items,
-  onClickAdd,
+  onClickAddCart,
   imageUrl,
   name,
   className,
