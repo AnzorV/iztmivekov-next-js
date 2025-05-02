@@ -3,8 +3,8 @@ import {
   Filters,
   Title,
   TopBar,
-} from "@/components/shared";
-import { ProductGroupList } from "@/components/shared/product-group-list";
+} from "@/shared/components/shared";
+import { ProductGroupList } from "@/shared/components/shared/product-group-list";
 import { prisma } from "@/prisma/prisma-client";
 
 export default async function Home() {
