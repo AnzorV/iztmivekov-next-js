@@ -14,6 +14,7 @@ import {
 import { Ingredient, ProductItem } from "@prisma/client";
 import { IngredientItem } from "./ingredient-item";
 import { useSet } from "react-use";
+import { it } from "node:test";
 
 interface Props {
   imageUrl: string;
@@ -40,7 +41,7 @@ export const ChoosePizzaForm: React.FC<Props> = ({
   );
   const pizzaPrice = items.find(
     (item) => item.pizzaType == type && item.size == size
-  )!.price;
+  )?.price || 0;
   const totalIngredientsPrice = ingredients
     .filter((ingredient) => selectedIngredients.has(ingredient.id))
     .reduce((acc, ingredient) => acc + ingredient.price, 0);
@@ -55,7 +56,24 @@ const handleClickAdd = () => {
     type,
     ingredients: selectedIngredients,
   })
-}
+};
+
+  const availablePizzas = items.filter((item) => item.pizzaType == type);
+ const availablePizzaSizes = pizzaSizes.map((item) => ({
+    name: item.name,
+    value: item.value,
+    disabled: !availablePizzas.some((pizza) => Number(pizza.size) == Number(item.value)),
+  }));
+
+  React.useEffect(() => {
+    const availableSize = availablePizzaSizes?.find((item) => !item.disabled);
+
+    if (availableSize) {
+      setSize(Number(availableSize.value) as PizzaSize);
+    }
+  }, [type]);
+  console.log({items, availablePizzas, availablePizzaSizes});
+
   return (
     <div className={cn(className, "flex flex-1")}>
       <PizzaImage imageUrl={imageUrl} size={size} />
@@ -67,7 +85,7 @@ const handleClickAdd = () => {
 
         <div className="flex flex-col gap-4 my-5">
           <GroupVariants
-            items={pizzaSizes}
+            items={availablePizzaSizes}
             value={String(size)}
             onClick={(value) => setSize(Number(value) as PizzaSize)}
           />
@@ -93,7 +111,7 @@ const handleClickAdd = () => {
           </div>
         </div>
 
-        <Button className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10">
+        <Button onClick={handleClickAdd} className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10">
           Добавить в корзину {totalPrice} ₽
         </Button>
       </div>
