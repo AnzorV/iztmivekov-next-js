@@ -66,6 +66,7 @@ const handleClickAdd = () => {
   }));
 
   React.useEffect(() => {
+   const currentSize = availablePizzaSizes.find((item) => Number(item.value) == size);
     const availableSize = availablePizzaSizes?.find((item) => !item.disabled);
 
     if (availableSize) {
