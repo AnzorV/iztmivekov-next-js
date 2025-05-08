@@ -35,45 +35,48 @@ export const ChoosePizzaForm: React.FC<Props> = ({
 }) => {
   const [size, setSize] = React.useState<PizzaSize>(20);
   const [type, setType] = React.useState<PizzaType>(1);
-  
+
   const [selectedIngredients, { toggle: addIngredient }] = useSet(
     new Set<number>([])
   );
-  const pizzaPrice = items.find(
-    (item) => item.pizzaType == type && item.size == size
-  )?.price || 0;
+  const pizzaPrice =
+    items.find((item) => item.pizzaType == type && item.size == size)?.price ||
+    0;
   const totalIngredientsPrice = ingredients
     .filter((ingredient) => selectedIngredients.has(ingredient.id))
     .reduce((acc, ingredient) => acc + ingredient.price, 0);
-  const totalPrice = pizzaPrice + totalIngredientsPrice; 
-  const textDetaills =  `${size} см, ${mapPizzaType[type]} пицца`;
+  const totalPrice = pizzaPrice + totalIngredientsPrice;
+  const textDetaills = `${size} см, ${mapPizzaType[type]} пицца`;
 
-  
-const handleClickAdd = () => {
-  onClickAddCart?.();
-  console.log({
-    size,
-    type,
-    ingredients: selectedIngredients,
-  })
-};
+  const handleClickAdd = () => {
+    onClickAddCart?.();
+    console.log({
+      size,
+      type,
+      ingredients: selectedIngredients,
+    });
+  };
 
   const availablePizzas = items.filter((item) => item.pizzaType == type);
- const availablePizzaSizes = pizzaSizes.map((item) => ({
+  const availablePizzaSizes = pizzaSizes.map((item) => ({
     name: item.name,
     value: item.value,
-    disabled: !availablePizzas.some((pizza) => Number(pizza.size) == Number(item.value)),
+    disabled: !availablePizzas.some(
+      (pizza) => Number(pizza.size) == Number(item.value)
+    ),
   }));
 
   React.useEffect(() => {
-   const currentSize = availablePizzaSizes.find((item) => Number(item.value) == size);
+    const isAvailableSize = availablePizzaSizes.find(
+      (item) => Number(item.value) == size && !item.disabled
+    );
     const availableSize = availablePizzaSizes?.find((item) => !item.disabled);
 
-    if (availableSize) {
+    if (!isAvailableSize && availableSize) {
       setSize(Number(availableSize.value) as PizzaSize);
     }
   }, [type]);
-  console.log({items, availablePizzas, availablePizzaSizes});
+  console.log({ items, availablePizzas, availablePizzaSizes });
 
   return (
     <div className={cn(className, "flex flex-1")}>
@@ -112,7 +115,10 @@ const handleClickAdd = () => {
           </div>
         </div>
 
-        <Button onClick={handleClickAdd} className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10">
+        <Button
+          onClick={handleClickAdd}
+          className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10"
+        >
           Добавить в корзину {totalPrice} ₽
         </Button>
       </div>
