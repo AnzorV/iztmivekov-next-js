@@ -48,20 +48,13 @@ export const ChoosePizzaForm: React.FC<Props> = ({
   const totalPrice = pizzaPrice + totalIngredientsPrice;
   const textDetaills = `${size} см, ${mapPizzaType[type]} пицца`;
 
-  const handleClickAdd = () => {
-    onClickAddCart?.();
-    console.log({
-      size,
-      type,
-      ingredients: selectedIngredients,
-    });
-  };
 
-  const availablePizzas = items.filter((item) => item.pizzaType == type);
+
+  const filteredPizzas = items.filter((item) => item.pizzaType == type);
   const availablePizzaSizes = pizzaSizes.map((item) => ({
     name: item.name,
     value: item.value,
-    disabled: !availablePizzas.some(
+    disabled: !filteredPizzas.some(
       (pizza) => Number(pizza.size) == Number(item.value)
     ),
   }));
@@ -76,8 +69,14 @@ export const ChoosePizzaForm: React.FC<Props> = ({
       setSize(Number(availableSize.value) as PizzaSize);
     }
   }, [type]);
-  console.log({ items, availablePizzas, availablePizzaSizes });
-
+  const handleClickAdd = () => {
+    onClickAddCart?.();
+    console.log({
+      size,
+      type,
+      ingredients: selectedIngredients,
+    });
+  };
   return (
     <div className={cn(className, "flex flex-1")}>
       <PizzaImage imageUrl={imageUrl} size={size} />
