@@ -15,7 +15,8 @@ import { Ingredient, ProductItem } from "@prisma/client";
 import { IngredientItem } from "./ingredient-item";
 import { useSet } from "react-use";
 import { it } from "node:test";
-import { calcTotalPizzaPrice } from "@/shared/lib/calc-total-pizza-price";
+import { calcTotalPizzaPrice, getAvailablePizzaSizes } from "@/shared/lib";
+import { usePizzaOptions } from "@/shared/hooks";
 
 interface Props {
   imageUrl: string;
@@ -34,37 +35,15 @@ export const ChoosePizzaForm: React.FC<Props> = ({
   name,
   className,
 }) => {
-  const [size, setSize] = React.useState<PizzaSize>(20);
-  const [type, setType] = React.useState<PizzaType>(1);
-
-  const [selectedIngredients, { toggle: addIngredient }] = useSet(
-    new Set<number>([])
-  );
+  const { size, type, selectedIngredients, availableSizes, addIngredient, setSize, setType } = usePizzaOptions(items);
 
   const totalPrice = calcTotalPizzaPrice(type, size, items, ingredients, selectedIngredients);
   const textDetaills = `${size} см, ${mapPizzaType[type]} пицца`;
 
 
 
-  const filteredPizzasByType = items.filter((item) => item.pizzaType == type);
-  const availablePizzaSizes = pizzaSizes.map((item) => ({
-    name: item.name,
-    value: item.value,
-    disabled: !filteredPizzasByType.some(
-      (pizza) => Number(pizza.size) == Number(item.value)
-    ),
-  }));
 
-  React.useEffect(() => {
-    const isAvailableSize = availablePizzaSizes.find(
-      (item) => Number(item.value) == size && !item.disabled
-    );
-    const availableSize = availablePizzaSizes?.find((item) => !item.disabled);
-
-    if (!isAvailableSize && availableSize) {
-      setSize(Number(availableSize.value) as PizzaSize);
-    }
-  }, [type]);
+ 
   const handleClickAdd = () => {
     onClickAddCart?.();
     console.log({
@@ -84,7 +63,7 @@ export const ChoosePizzaForm: React.FC<Props> = ({
 
         <div className="flex flex-col gap-4 my-5">
           <GroupVariants
-            items={availablePizzaSizes}
+            items={availableSizes}
             value={String(size)}
             onClick={(value) => setSize(Number(value) as PizzaSize)}
           />
