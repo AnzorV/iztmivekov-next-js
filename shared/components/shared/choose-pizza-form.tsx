@@ -15,6 +15,7 @@ import { Ingredient, ProductItem } from "@prisma/client";
 import { IngredientItem } from "./ingredient-item";
 import { useSet } from "react-use";
 import { it } from "node:test";
+import { calcTotalPizzaPrice } from "@/shared/lib/calc-total-pizza-price";
 
 interface Props {
   imageUrl: string;
@@ -39,22 +40,17 @@ export const ChoosePizzaForm: React.FC<Props> = ({
   const [selectedIngredients, { toggle: addIngredient }] = useSet(
     new Set<number>([])
   );
-  const pizzaPrice =
-    items.find((item) => item.pizzaType == type && item.size == size)?.price ||
-    0;
-  const totalIngredientsPrice = ingredients
-    .filter((ingredient) => selectedIngredients.has(ingredient.id))
-    .reduce((acc, ingredient) => acc + ingredient.price, 0);
-  const totalPrice = pizzaPrice + totalIngredientsPrice;
+
+  const totalPrice = calcTotalPizzaPrice(type, size, items, ingredients, selectedIngredients);
   const textDetaills = `${size} см, ${mapPizzaType[type]} пицца`;
 
 
 
-  const filteredPizzas = items.filter((item) => item.pizzaType == type);
+  const filteredPizzasByType = items.filter((item) => item.pizzaType == type);
   const availablePizzaSizes = pizzaSizes.map((item) => ({
     name: item.name,
     value: item.value,
-    disabled: !filteredPizzas.some(
+    disabled: !filteredPizzasByType.some(
       (pizza) => Number(pizza.size) == Number(item.value)
     ),
   }));
