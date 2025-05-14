@@ -17,6 +17,7 @@ import { useSet } from "react-use";
 import { it } from "node:test";
 import { calcTotalPizzaPrice, getAvailablePizzaSizes } from "@/shared/lib";
 import { usePizzaOptions } from "@/shared/hooks";
+import { getPizzaDetails } from "@/shared/lib";
 
 interface Props {
   imageUrl: string;
@@ -37,9 +38,7 @@ export const ChoosePizzaForm: React.FC<Props> = ({
 }) => {
   const { size, type, selectedIngredients, availableSizes, addIngredient, setSize, setType } = usePizzaOptions(items);
 
-  const totalPrice = calcTotalPizzaPrice(type, size, items, ingredients, selectedIngredients);
-  const textDetaills = `${size} см, ${mapPizzaType[type]} пицца`;
-
+  const { totalPrice, textDetaills } = getPizzaDetails(items, type, size, ingredients, selectedIngredients);
 
 
 
