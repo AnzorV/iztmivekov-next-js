@@ -1,5 +1,7 @@
+'use client';
+
 import { cn } from "@/shared/lib/utils";
-import React, { use } from "react";
+import React from "react";
 import { PizzaImage } from "./pizza-image";
 import { Title } from "./title";
 import { Button } from "../ui";
@@ -13,9 +15,6 @@ import {
 } from "@/shared/constants/pizza";
 import { Ingredient, ProductItem } from "@prisma/client";
 import { IngredientItem } from "./ingredient-item";
-import { useSet } from "react-use";
-import { it } from "node:test";
-import { calcTotalPizzaPrice, getAvailablePizzaSizes } from "@/shared/lib";
 import { usePizzaOptions } from "@/shared/hooks";
 import { getPizzaDetails } from "@/shared/lib";
 
