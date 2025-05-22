@@ -78,37 +78,37 @@ model Ingredient {
 }
 
 model Cart {
-  id Int @id @default(autoincrement())
+    id Int @id @default(autoincrement())
 
-  user   User? @relation(fields: [userId], references: [id])
-  userId Int? @unique
+    user   User? @relation(fields: [userId], references: [id])
+    userId Int?  @unique
 
+    items CartItem[]
 
-  items CartItem[]
-  token String
+    token String
 
-  totalAmount Int        @default(0)
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+    totalAmount Int @default(0)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 model CartItem {
-  id Int @id @default(autoincrement())
+    id Int @id @default(autoincrement())
 
-  productItem   ProductItem @relation(fields: [productItemId], references: [id])
-  productItemId Int
+    cart   Cart @relation(fields: [cartId], references: [id])
+    cartId Int
 
-  cart   Cart @relation(fields: [cartId], references: [id])
-  cartId Int
+    productItem   ProductItem @relation(fields: [productItemId], references: [id])
+    productItemId Int
 
-  quantity  Int
+    quantity Int @default(1)
 
-  ingredients   Ingredient[]
+    ingredients Ingredient[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
-
 model Order {
   id Int @id @default(autoincrement())
 
