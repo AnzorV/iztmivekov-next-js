@@ -3,7 +3,12 @@ import { GroupVariants } from "@/shared/components/shared/group-variants";
 import { prisma } from "@/prisma/prisma-client";
 import { notFound } from "next/navigation";
 
-export default async function ProductPage({ params: { id } }: { params: { id: string } }) {
+export default async function ProductPage(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
+
+  const {
+    id
+  } = params;
 
   const product = await prisma.product.findFirst({ where: { id: Number(id) } });
 
