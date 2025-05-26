@@ -10,12 +10,12 @@ interface Props {
   className?: string;
 
 
-  onClickAdd?: VoidFunction;
+  onSubmit?: VoidFunction;
 }
 
 export const ChooseProductForm: React.FC<Props> = ({
 
-  onClickAdd,
+  onSubmit,
   imageUrl,
   name,
   className,
@@ -39,7 +39,7 @@ export const ChooseProductForm: React.FC<Props> = ({
         <p className="text-gray-400">{textDetaills}</p>
 
         <Button
-
+            onClick={onSubmit}
             className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10">
                 Добавить в корзину {totalPrice} ₽
             </Button>

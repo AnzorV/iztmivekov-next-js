@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { cn } from "@/shared/lib/utils";
 import React from "react";
@@ -24,31 +24,40 @@ interface Props {
   className?: string;
   ingredients: Ingredient[];
   items: ProductItem[];
-  onClickAddCart?: VoidFunction;
+  onSubmit: (itemId: number, ingredients: number[]) => void;
 }
 
 export const ChoosePizzaForm: React.FC<Props> = ({
   ingredients,
   items,
-  onClickAddCart,
+  onSubmit,
   imageUrl,
   name,
   className,
 }) => {
-  const { size, type, selectedIngredients, availableSizes, addIngredient, setSize, setType } = usePizzaOptions(items);
+  const {
+    size,
+    type,
+    selectedIngredients,
+    availableSizes,
+    currentItemId,
+    addIngredient,
+    setSize,
+    setType,
+  } = usePizzaOptions(items);
 
-  const { totalPrice, textDetaills } = getPizzaDetails(items, type, size, ingredients, selectedIngredients);
+  const { totalPrice, textDetaills } = getPizzaDetails(
+    items,
+    type,
+    size,
+    ingredients,
+    selectedIngredients
+  );
 
-
-
- 
   const handleClickAdd = () => {
-    onClickAddCart?.();
-    console.log({
-      size,
-      type,
-      ingredients: selectedIngredients,
-    });
+    if (currentItemId) {
+      onSubmit(currentItemId, Array.from(selectedIngredients));
+    }
   };
   return (
     <div className={cn(className, "flex flex-1")}>
