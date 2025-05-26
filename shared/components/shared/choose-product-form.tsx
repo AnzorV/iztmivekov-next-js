@@ -8,7 +8,7 @@ interface Props {
   imageUrl: string;
   name: string;
   className?: string;
-
+  price: number;
 
   onSubmit?: VoidFunction;
 }
@@ -19,9 +19,9 @@ export const ChooseProductForm: React.FC<Props> = ({
   imageUrl,
   name,
   className,
+  price,
 }) => {
-    const textDetaills = '30 см, традиционное тесто 30';
-    const totalPrice = 350;
+    
  
   return (
     <div className={cn(className, "flex flex-1")}>
@@ -36,12 +36,11 @@ export const ChooseProductForm: React.FC<Props> = ({
       <div className="w-[490px] bg-[#F7F6F5] p-7">
         <Title text={name} size="lg" className="font-extrabold mb-5" />
 
-        <p className="text-gray-400">{textDetaills}</p>
 
         <Button
             onClick={onSubmit}
             className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10">
-                Добавить в корзину {totalPrice} ₽
+                Добавить в корзину {price} ₽
             </Button>
       </div>
     </div>

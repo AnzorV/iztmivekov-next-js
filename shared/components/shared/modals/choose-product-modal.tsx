@@ -44,7 +44,12 @@ export const ChooseProductModal: React.FC<Props> = ({ product, className }) => {
             onSubmit={onAddPizza}
           />
         ) : (
-          <ChooseProductForm imageUrl={product.imageUrl} name={product.name}  />
+          <ChooseProductForm
+            imageUrl={product.imageUrl}
+            name={product.name}
+            onSubmit={onAddProduct}
+            price={firstItem.price}
+          />
         )}
       </DialogContent>
     </Dialog>
