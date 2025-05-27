@@ -9,3 +9,6 @@ export interface GetSearchParams {
     page?: string;
     limit?: string;
 }
+
+const DEFAULT_MIN_PRICE = 0;
+const DEFAULT_MAX_PRICE = 1000;8
