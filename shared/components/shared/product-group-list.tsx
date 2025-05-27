@@ -2,8 +2,8 @@
 
 import React from "react";
 import { Title } from "./title";
-import {useIntersection} from 'react-use';
 import { cn } from "@/shared/lib/utils";
+import { useIntersection } from 'react-use'; 
 import { ProductCard } from "./product-card";
 import { useCategoryStore } from "@/shared/store/category";
 
@@ -22,22 +22,26 @@ export const ProductGroupList: React.FC<Props> = ({
   categoryId,
   className,
 }) => {
-    const setActiveCategoryId = useCategoryStore((state) => state.setActiveId);
-    const intersectionRef = React.useRef(null);
-    const intersection = useIntersection(intersectionRef, {
-        threshold: 0.4,
-    });
-    React.useEffect(() => {
-        if (intersection?.isIntersecting) {
-          setActiveCategoryId(categoryId);
-        }
-    }, [categoryId, intersection?.isIntersecting, title]);
+  const setActiveCategoryId = useCategoryStore((state) => state.setActiveId);
+  const intersectionRef = React.useRef<HTMLDivElement>(null);
+
+  // Safely cast to HTMLElement for useIntersection
+  const intersection = typeof window !== 'undefined' && intersectionRef.current
+    ? useIntersection(intersectionRef as React.RefObject<HTMLElement>, { threshold: 0.4 })
+    : null;
+
+  React.useEffect(() => {
+    if (intersection?.isIntersecting) {
+      setActiveCategoryId(categoryId);
+    }
+  }, [categoryId, intersection?.isIntersecting]);
+
   return (
     <div className={className} id={title} ref={intersectionRef}>
       <Title text={title} size="lg" className="font-extrabold mb-5" />
 
       <div className={cn("grid grid-cols-3 gap-[50px]", listClassName)}>
-        {items.map((product, i) => (
+        {items.map((product) => (
           <ProductCard
             key={product.id}
             id={product.id}
