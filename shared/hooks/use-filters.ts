@@ -69,4 +69,5 @@ export const useFilters = (): ReturnProps => {
     }),
     [sizes, pizzaTypes, selectedIngredients, prices],
   );
+
 };
