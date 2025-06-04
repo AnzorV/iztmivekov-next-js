@@ -1,12 +1,6 @@
-import { ChooseProductForm, Container, PizzaImage, ProductForm, Title } from "@/shared/components/shared";
-import { GroupVariants } from "@/shared/components/shared/group-variants";
+import { Container, ProductForm } from "@/shared/components/shared";
 import { prisma } from "@/prisma/prisma-client";
 import { notFound } from "next/navigation";
-import { ChoosePizzaForm } from "@/shared/components/shared/choose-pizza-form";
-import { addCartItem } from "@/shared/services/cart";
-import toast from "react-hot-toast";
-import router from "next/router";
-import { useCartStore } from "@/shared/store";
 
 export default async function ProductPage(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;

@@ -7,7 +7,7 @@ import { updateCartTotalAmount } from "@/shared/lib/update-cart-total-amount";
 
 export async function GET(req: NextRequest) {
   try {
-    const token = req.cookies.get('cartToken')?.value;
+    const token = req.cookies.get("cartToken")?.value;
 
     if (!token) {
       return NextResponse.json({ totalAmount: 0, items: [] });
@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
       include: {
         items: {
           orderBy: {
-            createdAt: 'desc',
+            createdAt: "desc",
           },
           include: {
             productItem: {
@@ -40,14 +40,17 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(userCart);
   } catch (error) {
-    console.log('[CART_GET] Server error', error);
-    return NextResponse.json({ message: 'Не удалось получить корзину' }, { status: 500 });
+    console.log("[CART_GET] Server error", error);
+    return NextResponse.json(
+      { message: "Не удалось получить корзину" },
+      { status: 500 }
+    );
   }
 }
 
 export async function POST(req: NextRequest) {
   try {
-    let token = req.cookies.get('cartToken')?.value;
+    let token = req.cookies.get("cartToken")?.value;
 
     if (!token) {
       token = crypto.randomUUID();
@@ -65,6 +68,7 @@ export async function POST(req: NextRequest) {
           every: {
             id: { in: data.ingredients },
           },
+
         },
       },
     });
@@ -93,10 +97,13 @@ export async function POST(req: NextRequest) {
     const updatedUserCart = await updateCartTotalAmount(token);
 
     const resp = NextResponse.json(updatedUserCart);
-    resp.cookies.set('cartToken', token);
+    resp.cookies.set("cartToken", token);
     return resp;
   } catch (error) {
-    console.log('[CART_POST] Server error', error);
-    return NextResponse.json({ message: 'Не удалось создать корзину' }, { status: 500 });
+    console.log("[CART_POST] Server error", error);
+    return NextResponse.json(
+      { message: "Не удалось создать корзину" },
+      { status: 500 }
+    );
   }
 }
