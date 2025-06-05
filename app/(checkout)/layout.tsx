@@ -1,4 +1,4 @@
-import { Header } from "@/shared/components/shared"
+import { Container, Header } from "@/shared/components/shared"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -14,8 +14,10 @@ export const metadata: Metadata = {
     return (
 
         <main className="min-h-screen bg-[#F4F1EE]">
-            <Header className="border-gray-200" />
+            <Container>
+                <Header hasSearch={false} hasCart={false} className="border-b-gray-200" />
             {children}
+            </Container>
             </main>
    
     )
