@@ -1,4 +1,4 @@
-import { Container, Title, WhiteBlock } from "@/shared/components/shared";
+import { CheckoutItemDetails, Container, Title, WhiteBlock } from "@/shared/components/shared";
 import { Input, Textarea } from "@/shared/components/ui";
 
 export default function CheckoutPage() {
@@ -10,7 +10,7 @@ export default function CheckoutPage() {
       />
 
       <div className="flex gap-10">
-        <div className="flex flex-col gap-10 flex=1 mb-20">
+        <div className="flex flex-col gap-10 flex-1 mb-20">
           <WhiteBlock title="1. Корзина">1223344443</WhiteBlock>
 
           <WhiteBlock title="2. Персональные данные">
@@ -43,8 +43,13 @@ export default function CheckoutPage() {
             <WhiteBlock className="p-6 sticky top-4">
                 <div className="flex flex-col gap-1">
                   <span className="text-xl">Итого</span>
-                  <span className="text-4xl font-extrabold">3506 ₽</span>
+                  <span className="text-[34px] font-extrabold">3506 ₽</span>
                 </div>
+
+                <CheckoutItemDetails title="Стоимость товаров:" value="3000 ₽" />
+                                <CheckoutItemDetails title="Налоги:" value="3000 ₽" />
+                <CheckoutItemDetails title="Доставка:" value="3000 ₽" />
+
             </WhiteBlock>
         </div>
       </div>
