@@ -19,11 +19,18 @@ export default function CheckoutPage() {
       <div className="flex gap-10">
         <div className="flex flex-col gap-10 flex-1 mb-20">
           <WhiteBlock title="1. Корзина">
-         <div className="flex flex-col gap-5">
-             <CheckoutItem id={1} imageUrl={'https://media.dodostatic.net/image/r:584x584/11EE7D61706D472F9A5D71EB94149304.webp'} details="Большая Конфета Россия Классическая с присыпкой в шоколаде, 200 г" name="Чоризо Фреш" price={216} quantity={3} />
-                    <CheckoutItem id={1} imageUrl={'https://media.dodostatic.net/image/r:584x584/11EE7D61706D472F9A5D71EB94149304.webp'} details="Большая Конфета Россия Классическая с присыпкой в шоколаде, 200 г" name="Чоризо Фреш" price={216} quantity={3} />
-
-         </div>
+            <div className="flex flex-col gap-5">
+              <CheckoutItem
+                id={1}
+                imageUrl={
+                  "https://media.dodostatic.net/image/r:584x584/11EE7D61706D472F9A5D71EB94149304.webp"
+                }
+                details="Большая Конфета Россия Классическая с присыпкой в шоколаде, 200 г"
+                name="Чоризо Фреш"
+                price={216}
+                quantity={3}
+              />
+            </div>
           </WhiteBlock>
 
           <WhiteBlock title="2. Персональные данные">

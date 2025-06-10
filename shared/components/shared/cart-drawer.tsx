@@ -21,24 +21,16 @@ import { useCartStore } from "@/shared/store";
 import { PizzaSize, PizzaType } from "@/shared/constants/pizza";
 import { Title } from "./title";
 import { cn } from "@/shared/lib/utils";
+import { useCart } from "@/shared/hooks";
 
-interface Props {
-  className?: string;
-}
 
-export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({
+
+export const CartDrawer: React.FC<React.PropsWithChildren> = ({
   children,
-  className,
-}) => {
-  const totalAmount = useCartStore((state) => state.totalAmount);
-  const items = useCartStore((state) => state.items);
-  const fetchCartItems = useCartStore((state) => state.fetchCartItems);
-  const updateItemQuantity = useCartStore((state) => state.updateItemQuantity);
-  const removeCartItem = useCartStore((state) => state.removeCartItem);
 
-  React.useEffect(() => {
-    fetchCartItems();
-  }, []);
+}) => {
+  const {totalAmount, updateItemQuantity, items, removeCartItem} = useCart();
+
 
   const onClickCountButton = (
     id: number,
@@ -51,7 +43,6 @@ export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({
   };
 
   return (
-    <div className={className}>
       <Sheet>
         <SheetTrigger asChild>{children}</SheetTrigger>
         <SheetContent className="flex flex-col justify-between pb-0 bg-[#F4F1EE]">
@@ -135,6 +126,6 @@ export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({
           </div>
         </SheetContent>
       </Sheet>
-    </div>
+    
   );
 };
