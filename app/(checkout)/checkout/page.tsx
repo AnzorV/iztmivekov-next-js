@@ -1,3 +1,5 @@
+'use client';
+
 import {
   CheckoutItem,
   CheckoutItemDetails,
@@ -6,9 +8,17 @@ import {
   WhiteBlock,
 } from "@/shared/components/shared";
 import { Button, Input, Textarea } from "@/shared/components/ui";
+import { useCart } from "@/shared/hooks";
 import { Package, Percent, Truck } from "lucide-react";
 
 export default function CheckoutPage() {
+  const { totalAmount, updateItemQuantity, items, removeCartItem } = useCart();
+
+  const onCLickCountButton = (id: number, quantity: number, type: 'plus' | 'minus') => {
+    const newQuantity = type === 'plus' ? quantity + 1 : quantity - 1;
+    updateItemQuantity(id, newQuantity);
+  }
+  
   return (
     <Container className="mt-10">
       <Title
@@ -20,16 +30,19 @@ export default function CheckoutPage() {
         <div className="flex flex-col gap-10 flex-1 mb-20">
           <WhiteBlock title="1. Корзина">
             <div className="flex flex-col gap-5">
-              <CheckoutItem
-                id={1}
-                imageUrl={
-                  "https://media.dodostatic.net/image/r:584x584/11EE7D61706D472F9A5D71EB94149304.webp"
-                }
+              {items.map((item) => (
+                        <CheckoutItem
+                        key={item.id}
+                id={item.id}
+                imageUrl={item.imageUrl}
                 details="Большая Конфета Россия Классическая с присыпкой в шоколаде, 200 г"
                 name="Чоризо Фреш"
                 price={216}
                 quantity={3}
+                onClickCountButton={(type) => onCLickCountButton(item.id, item.quantity, type)}
+                onClickRemove={() => removeCartItem(item.id)}
               />
+              ))}
             </div>
           </WhiteBlock>
 
@@ -66,7 +79,7 @@ export default function CheckoutPage() {
           <WhiteBlock className="p-6 sticky top-4">
             <div className="flex flex-col gap-1">
               <span className="text-xl">Итого</span>
-              <span className="text-[34px] font-extrabold">3506 ₽</span>
+              <span className="text-[34px] font-extrabold">{totalAmount} ₽</span>
             </div>
 
             <CheckoutItemDetails
