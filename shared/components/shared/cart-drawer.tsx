@@ -30,7 +30,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren> = ({
 
 }) => {
   const {totalAmount, updateItemQuantity, items, removeCartItem} = useCart();
-
+  const [redirecting, setRedirecting] = React.useState(false);
 
   const onClickCountButton = (
     id: number,
@@ -41,6 +41,8 @@ export const CartDrawer: React.FC<React.PropsWithChildren> = ({
 
     updateItemQuantity(id, newQuantity);
   };
+
+  
 
   return (
       <Sheet>
@@ -82,13 +84,12 @@ export const CartDrawer: React.FC<React.PropsWithChildren> = ({
                       id={item.id}
                       imageUrl={item.imageUrl}
                       details={
-                        item.pizzaSize && item.pizzaType
-                          ? getCartItemDetails(
+                      getCartItemDetails(
                               item.ingredients,
                               item.pizzaType as PizzaType,
                               item.pizzaSize as PizzaSize
                             )
-                          : ""
+    
                       }
                       disabled={item.disabled}
                       name={item.name}
@@ -114,7 +115,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren> = ({
                     <span className="font-bold text-lg">{totalAmount} ₽</span>
                   </div>
                   <Link href="/checkout">
-                    <Button type="submit" className="w-full h-12 text-base">
+                    <Button onClick={() => setRedirecting(true)} loading={redirecting} type="submit" className="w-full h-12 text-base">
                       Оформить заказ
                       <ArrowRight className="w-5 ml-2" />
                     </Button>

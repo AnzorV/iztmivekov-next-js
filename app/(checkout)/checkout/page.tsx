@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   CheckoutItem,
@@ -8,17 +8,23 @@ import {
   WhiteBlock,
 } from "@/shared/components/shared";
 import { Button, Input, Textarea } from "@/shared/components/ui";
+import { PizzaSize, PizzaType, PizzaType } from "@/shared/constants/pizza";
 import { useCart } from "@/shared/hooks";
+import { getCartItemDetails } from "@/shared/lib";
 import { Package, Percent, Truck } from "lucide-react";
 
 export default function CheckoutPage() {
   const { totalAmount, updateItemQuantity, items, removeCartItem } = useCart();
 
-  const onCLickCountButton = (id: number, quantity: number, type: 'plus' | 'minus') => {
-    const newQuantity = type === 'plus' ? quantity + 1 : quantity - 1;
+  const onCLickCountButton = (
+    id: number,
+    quantity: number,
+    type: "plus" | "minus"
+  ) => {
+    const newQuantity = type === "plus" ? quantity + 1 : quantity - 1;
     updateItemQuantity(id, newQuantity);
-  }
-  
+  };
+
   return (
     <Container className="mt-10">
       <Title
@@ -31,17 +37,24 @@ export default function CheckoutPage() {
           <WhiteBlock title="1. Корзина">
             <div className="flex flex-col gap-5">
               {items.map((item) => (
-                        <CheckoutItem
-                        key={item.id}
-                id={item.id}
-                imageUrl={item.imageUrl}
-                details="Большая Конфета Россия Классическая с присыпкой в шоколаде, 200 г"
-                name="Чоризо Фреш"
-                price={216}
-                quantity={3}
-                onClickCountButton={(type) => onCLickCountButton(item.id, item.quantity, type)}
-                onClickRemove={() => removeCartItem(item.id)}
-              />
+                <CheckoutItem
+                  key={item.id}
+                  id={item.id}
+                  imageUrl={item.imageUrl}
+                  details={getCartItemDetails(
+                    item.ingredients,
+                    item.pizzaType as PizzaType,
+                    item.pizzaSize as PizzaSize
+                  )}
+                  name={item.name}
+                  disabled={item.disabled}
+                  price={item.price}
+                  quantity={item.quantity}
+                  onClickCountButton={(type) =>
+                    onCLickCountButton(item.id, item.quantity, type)
+                  }
+                  onClickRemove={() => removeCartItem(item.id)}
+                />
               ))}
             </div>
           </WhiteBlock>
@@ -79,7 +92,9 @@ export default function CheckoutPage() {
           <WhiteBlock className="p-6 sticky top-4">
             <div className="flex flex-col gap-1">
               <span className="text-xl">Итого</span>
-              <span className="text-[34px] font-extrabold">{totalAmount} ₽</span>
+              <span className="text-[34px] font-extrabold">
+                {totalAmount} ₽
+              </span>
             </div>
 
             <CheckoutItemDetails
