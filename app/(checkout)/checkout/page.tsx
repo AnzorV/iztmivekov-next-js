@@ -1,8 +1,11 @@
 "use client";
 
+import { useForm, SubmitHandler } from "react-hook-form";
+
 import {
   CheckoutItem,
   Container,
+  FormInput,
   Title,
   WhiteBlock,
 } from "@/shared/components/shared";
@@ -16,6 +19,10 @@ import { getCartItemDetails } from "@/shared/lib";
 
 export default function CheckoutPage() {
   const { totalAmount, updateItemQuantity, items, removeCartItem } = useCart();
+
+  const form = useForm({
+    resolver:
+  });
 
   const onCLickCountButton = (
     id: number,
@@ -71,7 +78,7 @@ export default function CheckoutPage() {
                 className="text-base"
               />
               <Input name="email" placeholder="E-Mail" className="text-base" />
-              <Input name="phone" placeholder="Телефон" className="text-base" />
+              <FormInput name="phone" placeholder="Телефон" className="text-base" />
             </div>
           </WhiteBlock>
 
