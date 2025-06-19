@@ -4,13 +4,15 @@ import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import {
+  CheckoutAddressForm,
+  CheckoutCart,
+  CheckoutPersonalForm,
+  CheckoutSidebar,
   Container,
   Title,
-} from "@/shared/components/shared";
-import { CheckoutSidebar } from "@/shared/components/shared/checkbox-sidebar";
+} from "@/shared/components";
 import { useCart } from "@/shared/hooks";
-import { CheckoutAddressForm, CheckoutCart, CheckoutPersonalForm } from "@/shared/components/shared/checkout";
-import { checkoutFormSchema, CheckoutFormValues } from "@/shared/components/shared/checkout/checkout-form-schema";
+import { checkoutFormSchema, CheckoutFormValues } from "@/shared/constants";
 
 
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { WhiteBlock } from "../white-block";
-import { Input, Textarea } from "../../ui";
+import { Input } from "../../ui";
+import { FormTextarea } from "../form";
 
 interface Props {
     className?: string;
@@ -15,7 +16,8 @@ export const CheckoutAddressForm: React.FC<Props> = ({ className }) => {
                 className="text-base"
                 placeholder="Введите адресс..."
               />
-              <Textarea
+              <FormTextarea
+                name="comment"
                 className="text-base"
                 placeholder="Комментарий к заказу"
                 rows={5}
