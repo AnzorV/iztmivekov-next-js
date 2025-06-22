@@ -20,6 +20,7 @@ export const CountIconButton: React.FC<IconButtonProps> = ({
     <Button
       variant="outline"
       disabled={disabled}
+      type='button'
       onClick={onClick}
       className={cn(
         'p-0 hover:bg-primary hover:text-white disabled:bg-white disabled:border-gray-400 disabled:text-gray-400',

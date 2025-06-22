@@ -4,6 +4,7 @@ import { Input } from '../../ui';
 import { FormInput } from '../form';
 
 interface Props {
+    disabled?: boolean
     className?: string;
 }
 

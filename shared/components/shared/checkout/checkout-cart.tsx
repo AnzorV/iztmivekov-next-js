@@ -4,19 +4,25 @@ import React from "react";
 import { CheckoutItem } from "../checkout-item";
 import { WhiteBlock } from "../white-block";
 import { CartStateItem } from "@/shared/lib/get-cart-details";
+import { Skeleton } from "../../ui";
+import { CheckoutItemSkeleton } from "../checkbox-item-skeleton";
 
 interface Props {
     items: CartStateItem[];
     onClickCountButton: (id: number, quantity: number, type: 'plus' | 'minus') => void;
     className?: string;
+    loading?: boolean;
     removeCartItem: (id: number) => void;
 }
 
-export const CheckoutCart: React.FC<Props> = ({ className, items, onClickCountButton, removeCartItem }) => {
+export const CheckoutCart: React.FC<Props> = ({ className, items, onClickCountButton, loading, removeCartItem }) => {
     return (
           <WhiteBlock title="1. Корзина" className={className}>
             <div className="flex flex-col gap-5">
-              {items.map((item) => (
+             
+              {loading ? [...Array(4)].map((_, index) => <CheckoutItemSkeleton key={index} />) : items.map((item) => (
+                
+              
                 <CheckoutItem
                   key={item.id}
                   id={item.id}

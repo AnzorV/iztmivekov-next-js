@@ -1,6 +1,6 @@
 import { Package, Percent, Truck } from 'lucide-react';
 import React from 'react';
-import { Button } from '../ui';
+import { Button, Skeleton } from '../ui';
 import { CheckoutItemDetails } from './checkout-item-details';
 import { WhiteBlock } from './white-block';
 import { cn } from '@/shared/lib/utils';
@@ -9,20 +9,20 @@ const VAT = 15;
 const DELIVERY_PRICE = 250;
 interface Props {
     totalAmount: number;
-    
+    loading?: boolean;
     className?: string;
 }
 
-export const CheckoutSidebar: React.FC<Props> = ({ totalAmount, className }) => {
+export const CheckoutSidebar: React.FC<Props> = ({ totalAmount, loading, className }) => {
       const vatPrice = (totalAmount * VAT) / 100;
       const totalPrice = totalAmount + DELIVERY_PRICE + vatPrice;
     return (
       <WhiteBlock className={cn("p-6 sticky top-4", className)}>
             <div className="flex flex-col gap-1">
               <span className="text-xl">Итого</span>
-              <span className="text-[34px] font-extrabold">
-                {totalPrice} ₽
-              </span>
+              {
+                loading ? <Skeleton className="h-11 w-48" /> : <span className="h-11 text-[34px] font-extrabold">{totalPrice} ₽</span>
+              }
             </div>
 
             <CheckoutItemDetails
@@ -32,7 +32,7 @@ export const CheckoutSidebar: React.FC<Props> = ({ totalAmount, className }) => 
                   Стоимость корзины:
                 </div>
               }
-              value={`${totalAmount} ₽`}
+              value={loading ? <Skeleton className="h-6 w-16 rounded-[6px]" /> : `${totalAmount} ₽`}
             />
             <CheckoutItemDetails
               title={
@@ -41,7 +41,7 @@ export const CheckoutSidebar: React.FC<Props> = ({ totalAmount, className }) => 
                   Налоги:
                 </div>
               }
-              value={`${vatPrice} ₽`}
+              value={loading ? <Skeleton className="h-6 w-16 rounded-[6px]" /> : `${vatPrice} ₽`}
             />
             <CheckoutItemDetails
               title={
@@ -50,7 +50,7 @@ export const CheckoutSidebar: React.FC<Props> = ({ totalAmount, className }) => 
                   Доставка:
                 </div>
               }
-              value={`${DELIVERY_PRICE} ₽`}
+              value={loading ? <Skeleton className="h-6 w-16 rounded-[6px]" /> : `${DELIVERY_PRICE} ₽`}
             />
 
             <Button
