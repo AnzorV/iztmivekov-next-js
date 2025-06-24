@@ -14,6 +14,7 @@ export async function createOrder(data: CheckoutFormValues) {
             token,
             totalAmount: 1500,
             status: OrderStatus.PENDING,
+            items: [],
             fullName: data.firstName + ' ' + data.lastName,
             email: data.email,
             phone: data.phone,
@@ -21,4 +22,5 @@ export async function createOrder(data: CheckoutFormValues) {
             comment: data.comment,
         }
     })
+    return 'https://www.youtube.com/watch?v=GUwizGbY4cc&t=64947s';
 }
