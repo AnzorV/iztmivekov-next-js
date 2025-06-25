@@ -17,6 +17,7 @@ export async function createOrder(data: CheckoutFormValues) {
     }
 
     const userCart = await prisma.cart.findFirst({
+      where: { token: cartToken }, // Add where clause
       include: {
         user: true,
         items: {
@@ -38,6 +39,7 @@ export async function createOrder(data: CheckoutFormValues) {
     if (userCart?.totalAmount == 0) {
       throw new Error("Cart is empty");
     }
+
     /* Создаем заказ */
     const order = await prisma.order.create({
       data: {
@@ -53,6 +55,7 @@ export async function createOrder(data: CheckoutFormValues) {
       },
     });
 
+    // Clear cart
     await prisma.cart.update({
       where: {
         id: userCart.id,
@@ -68,16 +71,29 @@ export async function createOrder(data: CheckoutFormValues) {
       },
     });
 
-    await sendEmail(
-      data.email,
-      "Iztmivekov / Оплатите Заказ #" + order.id,
-      PayOrderTemplate({
+    // Send email (remove await if PayOrderTemplate is not async)
+    try {
+      const emailTemplate = PayOrderTemplate({
         orderId: order.id,
         totalAmount: order.totalAmount,
-        paymentUrl: "https://www.youtube.com/watch?v=GUwizGbY4cc&t=66507s",
-      })
-    );
+        paymentUrl: 'https://yandex.ru', // Use full URL
+      });
+
+      await sendEmail(
+        data.email,
+        `Next Pizza / Оплатите заказ #${order.id}`,
+        emailTemplate,
+      );
+
+      console.log(`Order confirmation email sent to ${data.email}`);
+    } catch (emailError) {
+      console.error('[CreateOrder] Email sending failed:', emailError);
+      // Don't throw here if you want order creation to succeed even if email fails
+    }
+
+
   } catch (err) {
-    console.log('[CreateOrder] Server error', err);
+    console.error('[CreateOrder] Server error', err);
+    throw new Error('Failed to create order');
   }
 }
