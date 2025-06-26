@@ -3,7 +3,7 @@
 import { prisma } from "@/prisma/prisma-client";
 import { PayOrderTemplate } from "@/shared/components";
 import { CheckoutFormValues } from "@/shared/constants";
-import { sendEmail } from "@/shared/lib";
+import { createPayment, sendEmail } from "@/shared/lib";
 import { OrderStatus } from "@prisma/client";
 import { cookies } from "next/headers";
 
@@ -71,21 +71,41 @@ export async function createOrder(data: CheckoutFormValues) {
       },
     });
 
+    const paymentData = await createPayment({
+      amount: order.totalAmount,
+      orderId: order.id,
+      description: "Оплата заказа #" + order.id,
+    });
+
+    if (!paymentData) {
+      throw new Error("Payment data not found");
+    }
+
+    await prisma.order.update({
+      where: {
+        id: order.id,
+      },
+      data: {
+        paymentId: paymentData.id,
+      },
+    });
+
+    const paymentUrl = paymentData.confirmation.confirmation_url;
     // Send email (remove await if PayOrderTemplate is not async)
     try {
       const emailTemplate = PayOrderTemplate({
         orderId: order.id,
         totalAmount: order.totalAmount,
-        paymentUrl: 'https://yandex.ru', // Use full URL
+        paymentUrl, // Use full URL
       });
 
       await sendEmail(
         data.email,
-        `Next Pizza / Оплатите заказ #${order.id}`,
+        `Из тьмы Веков / Оплатите заказ #${order.id}`,
         emailTemplate,
       );
 
-      console.log(`Order confirmation email sent to ${data.email}`);
+      return paymentUrl;
     } catch (emailError) {
       console.error('[CreateOrder] Email sending failed:', emailError);
       // Don't throw here if you want order creation to succeed even if email fails
