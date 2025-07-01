@@ -10,6 +10,7 @@ import { SearchInput } from "./search-input";
 import { CartButton } from "./cart-button";
 import { useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
+import { useSession, signIn } from "next-auth/react";
 
 
 interface Props {
@@ -19,7 +20,10 @@ interface Props {
 }
 
 export const Header: React.FC<Props> = ({ hasSearch = true, hasCart = true, className }) => {
+    const  { data: session } = useSession();
     const searchParams = useSearchParams();
+
+    console.log(session, 999);
     React.useEffect(() => {
         if (searchParams.has('paid')) {
            setTimeout(() => {
@@ -33,9 +37,9 @@ export const Header: React.FC<Props> = ({ hasSearch = true, hasCart = true, clas
                 
                 <Link href="/">
                 <div className="flex items-center gap-4">
-                    <Image src="/logo.png" alt="Logo" width={35} height={35} />
+                    <Image src="/iztmivekov-logo.png" alt="Logo" width={70} height={70} />
                     <div>
-                        <h1 className="text-2xl uppercase font-black">Iztmivekov</h1>
+                        <h1 className="text-2xl uppercase font-black mb-1">Iztmivekov</h1>
                         <p className="text-sm text-gray-400 leading-3">Этно Кафе</p>
                     </div>
 
@@ -48,7 +52,10 @@ export const Header: React.FC<Props> = ({ hasSearch = true, hasCart = true, clas
 
 
                 <div className="flex items-center gap-3">
-                    <Button variant="outline" className="flex items-center gap-1"><User size={16} /> Войти</Button>
+                    <Button onClick={() => signIn('github', {
+                        callbackUrl: '/',
+                        redirect: true,
+                    })} variant="outline" className="flex items-center gap-1"><User size={16} /> Войти</Button>
                   {hasCart && <CartButton />}
                 </div>
             </Container>
