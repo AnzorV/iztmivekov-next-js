@@ -38,8 +38,8 @@ export const Header: React.FC<Props> = ({ hasSearch = true, hasCart = true, clas
                 <div className="flex items-center gap-4">
                     <Image src="/iztmivekov-logo.png" alt="Logo" width={70} height={70} />
                     <div>
-                        <h1 className="text-2xl uppercase font-black mb-1">Iztmivekov</h1>
-                        <p className="text-sm text-gray-400 leading-3">Этно Кафе</p>
+                        <h1 className="text-2xl uppercase font-black">Iztmivekov</h1>
+                        <p className="text-sm text-gray-400 leading-2">Этно Кафе</p>
                     </div>
 
                 </div>
