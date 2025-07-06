@@ -2,6 +2,7 @@
 
 import { prisma } from "@/prisma/prisma-client";
 import { PayOrderTemplate } from "@/shared/components";
+import { VerificationUserTemplate } from "@/shared/components/shared/email-templates/verification-user";
 import { CheckoutFormValues } from "@/shared/constants";
 import { createPayment, getUserSession, sendEmail } from "@/shared/lib";
 import { OrderStatus, Prisma } from "@prisma/client";
@@ -175,7 +176,20 @@ export async function registerUser(body: Prisma.UserCreateInput) {
 
     const code = Math.floor(100000 + Math.random() * 900000).toString();
 
-   
+    await prisma.verificationCode.create({
+      data: {
+        code,
+        userId: createdUser.id,
+      },
+    });
+
+    await sendEmail(
+      createdUser.email,
+      'Iztmivekov / 📝 Подтверждение регистрации',
+      VerificationUserTemplate({
+        code,
+      }),
+    );
   } catch (err) {
     console.log('Error [CREATE_USER]', err);
     throw err;

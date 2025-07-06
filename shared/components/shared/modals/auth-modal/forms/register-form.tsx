@@ -1,13 +1,14 @@
 'use client';
 
-import React from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import toast from 'react-hot-toast';
-import { registerUser } from '@/app/actions';
-import { TFormRegisterValues, formRegisterSchema } from './schemas';
-import { FormInput } from '../../../form';
-import { Button } from '@/shared/components/ui';
+import { FormProvider, useForm } from "react-hook-form";
+import { formRegisterSchema, TFormRegisterValues } from "./schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { registerUser } from "@/app/actions";
+import toast from "react-hot-toast";
+import { FormInput } from "../../../form";
+import { Button } from "@/shared/components/ui";
+
+
 
 interface Props {
   onClose?: VoidFunction;
@@ -25,25 +26,26 @@ export const RegisterForm: React.FC<Props> = ({ onClose, onClickLogin }) => {
     },
   });
 
-  const onSubmit = async (data: TFormRegisterValues) => {
-    try {
-      await registerUser({
-        email: data.email,
-        fullName: data.fullName,
-        password: data.password,
-      });
+ const onSubmit = async (data: TFormRegisterValues) => {
+  try {
+    await registerUser({
+      email: data.email,
+      fullName: data.fullName,
+      password: data.password,
+    });
 
-      toast.error('Регистрация успешна 📝. Подтвердите свою почту', {
-        icon: '✅',
-      });
+    toast.error('Регистрация успешна 📝. Подтвердите свою почту', {
+      icon: '✅',
+    });
 
-      onClose?.();
-    } catch (error) {
-      return toast.error('Неверный E-Mail или пароль', {
-        icon: '❌',
-      });
-    }
-  };
+    onClose?.();
+  } catch (error) {
+    return toast.error('Неверный E-Mail или пароль', {
+      icon: '❌',
+    });
+  }
+};
+
 
   return (
     <FormProvider {...form}>
